@@ -1,0 +1,9 @@
+#!/bin/bash
+LIVE_FILE='/usr/bin/live'
+if [[ $# -ge 1 ]]; then
+    LIVE_FILE='/usr/bin/'$1
+fi
+echo '#!/bin/bash' > $LIVE_FILE
+echo 'livestreamer $1 best' >> $LIVE_FILE
+chmod a+x $LIVE_FILE
+echo 'created '$LIVE_FILE
