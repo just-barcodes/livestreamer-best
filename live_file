@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $# -ge 1 ]]; then
+    livestreamer $1 best
+else
+    BUFFER=$(xclip -selection clipboard -o)
+    echo 'Buffer contained the following address: '
+    echo $BUFFER
+    livestreamer $BUFFER best
+fi
+

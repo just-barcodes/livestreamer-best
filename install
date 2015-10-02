@@ -1,13 +1,15 @@
 #!/bin/bash
-LIVE_FILE='/usr/bin/live'
+
+LIVE_FILE_NAME='/usr/bin/live'
 if [[ $# -ge 1 ]]; then
-    LIVE_FILE='/usr/bin/'$1
+    LIVE_FILE_NAME='/usr/bin/'$1
 fi
-if [[ -e $LIVE_FILE ]]; then
-    echo 'Warning: File '$LIVE_FILE' already exists!'
+
+if [[ -e $LIVE_FILE_NAME ]]; then
+    echo 'Warning: File '$LIVE_FILE_NAME' already exists!'
     exit
 fi
-echo '#!/bin/bash' > $LIVE_FILE
-echo 'livestreamer $1 best' >> $LIVE_FILE
-chmod a+x $LIVE_FILE
-echo 'Created '$LIVE_FILE
+
+cp live_file $LIVE_FILE_NAME
+chmod a+x $LIVE_FILE_NAME
+echo 'Created '$LIVE_FILE_NAME

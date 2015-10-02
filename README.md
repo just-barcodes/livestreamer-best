@@ -2,7 +2,9 @@
 
 Whenever I use [livestreamer](https://github.com/chrippa/livestreamer), I always
 use `livestreamer http://stream best` (with the `best` option). This simple
-script calls best automatically, so that I can do `live http://stream`.
+script calls best automatically, so that I can copy the address of the stream
+and just call `live` (and the adress will automatically be pasted to the
+terminal using `xclip`).
 
 
 ### Installation
@@ -23,8 +25,15 @@ script (you will probably need to `sudo` that)
 
 ### Example Usage
 
-Simply copy/paste the stream link after typing `live` (or the name you chose) in
-the terminal:
+Copy a stream-address to your clipboard (`Ctrl-C`), open a terminal and call
+
+```
+live
+```
+
+(or whatever name you chose)
+
+You can also still specify a stream-address directly:
 
 ```
 live http://www.twitch.tv/day9tv
