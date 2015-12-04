@@ -1,11 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env python
 
-if [[ $# -ge 1 ]]; then
-    livestreamer $1 best
-else
-    BUFFER=$(xclip -selection clipboard -o)
-    echo 'Buffer contained the following address: '
-    echo $BUFFER
-    livestreamer $BUFFER best
-fi
+import sys
+import subprocess
 
+argv = sys.argv
+stream = ''
+if len(sys.argv) > 1:
+    stream = sys.argv[1]
+else:
+    clipboard = subprocess.check_output('xclip -selection clipboard -o', shell=True)
+    print('Buffer contained the following address: {}'.format(clipboard))
+    stream = clipboard
+
+if len(sys.argv) <= 2 or (len(sys.argv) > 2 and sys.argv[2] != '--no-edit'):
+    stream = stream.replace('?channel=', '')
+
+print('Using following address: {}'.format(stream))
+subprocess.call('livestreamer {} best'.format(stream), shell=True)
