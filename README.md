@@ -38,3 +38,9 @@ You can also still specify a stream-address directly:
 ```
 live http://www.twitch.tv/day9tv
 ```
+
+It will now also work with addresses like
+```
+live http://player.twitch.tv/?channel=day9tv
+```
+as it will automatically cut out the `?channel=` part.
