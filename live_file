@@ -16,4 +16,7 @@ if len(sys.argv) <= 2 or (len(sys.argv) > 2 and sys.argv[2] != '--no-edit'):
     stream = stream.replace('?channel=', '')
 
 print('Using following address: {}'.format(stream))
-subprocess.call('livestreamer {} best'.format(stream), shell=True)
+try:
+    subprocess.call('livestreamer {} best'.format(stream), shell=True)
+except KeyboardInterrupt:
+    print('Stream ended')
