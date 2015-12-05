@@ -12,14 +12,14 @@ terminal using `xclip`).
 Give permission
 
 ```
-chmod a+x intall
+$> chmod a+x intall
 ```
 
 and then run the install with an optional name (default is `live`) for the
 script (you will probably need to `sudo` that)
 
 ```
-./install [name]
+$> ./install [name]
 ```
 
 
@@ -28,7 +28,7 @@ script (you will probably need to `sudo` that)
 Copy a stream-address to your clipboard (`Ctrl-C`), open a terminal and call
 
 ```
-live
+$> live
 ```
 
 (or whatever name you chose)
@@ -36,11 +36,39 @@ live
 You can also still specify a stream-address directly:
 
 ```
-live http://www.twitch.tv/day9tv
+$> live http://www.twitch.tv/day9tv
 ```
 
 It will now also work with addresses like
 ```
-live http://player.twitch.tv/?channel=day9tv
+$> live http://player.twitch.tv/?channel=day9tv
 ```
 as it will automatically cut out the `?channel=` part.
+
+
+### Options
+
+To see options
+
+```
+$> live -h
+usage: live [-h] [-c] [--no-edit] [--no-stream] [stream]
+
+Livestreamer wrapper
+
+positional arguments:
+  stream       stream address
+
+optional arguments:
+  -h, --help   show this help message and exit
+  -c           open chat in browser
+  --no-edit    do not modify stream address
+  --no-stream  does not start the stream (only opens chat, if the -c option is
+               present)
+```
+
+* The `-c` option will try to open the twitch chat in a new private
+`chromium-browser` window.
+* The `--no-edit` option will prevent any modifications of the stream address.
+* The `--no-stream` option will prevent the opening of the stream (in case you
+only want to open the chat).
