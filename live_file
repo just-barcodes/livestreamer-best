@@ -1,37 +1,58 @@
 #!/usr/bin/env python
 
+import sys
 import subprocess
 import argparse
+import time
 
 parser = argparse.ArgumentParser(description='Livestreamer wrapper')
 parser.add_argument('stream', nargs='?', default=None, help='stream address')
-parser.add_argument('-c', action='store_true', help='open chat in browser')
-parser.add_argument('--no-edit', action='store_true', help='do not modify stream address')
-parser.add_argument('--no-stream', action='store_true',
-                    help='does not start the stream (only opens chat, if the -c option is present)')
+parser.add_argument('-c', '--chat', action='store_true', help='open chat in browser')
+parser.add_argument('-d', '--no-edit', action='store_true', help='do not try to modify stream address')
+parser.add_argument('-z', '--no-stream', action='store_true',
+                    help='do not start the stream (only open chat, if the -c option is present)')
+parser.add_argument('-t', '--retry', nargs=2, type=int, metavar=('x', 'y'),
+                    help='retry starting the stream x times with y seconds in between')
 
 args = parser.parse_args()
 stream = args.stream
 
 if not stream:
-    clipboard = subprocess.check_output('xclip -selection clipboard -o', shell=True)
+    try:
+        clipboard = subprocess.check_output('xclip -selection clipboard -o', shell=True)
+    except subprocess.CalledProcessError:
+        print('Buffer did not contain an adress!')
+        parser.print_help()
+        sys.exit(1)  # exit failure
     print('Buffer contained the following address: {}'.format(clipboard))
     stream = clipboard
+
+if not 'http' in stream or ';' in stream:  # prevent accidents
+    print('Bad address: {}'.format(stream))
+    parser.print_help()
+    sys.exit(1)  # exit failure
 
 if not args.no_edit:
     stream = stream.replace('?channel=', '')
 
-if args.c:
+if args.chat:
     chat = stream + '/chat'
     if not args.no_edit and 'player.' in stream:
         chat = chat.replace('player.', '')
     print('Opening chat ({})'.format(chat))
     proc = subprocess.Popen(['chromium-browser {} --incognito'.format(chat)], shell=True,
-                            stderr=None, stdout=None, close_fds=True, stdin=None)
+                            stderr=subprocess.PIPE, stdout=subprocess.PIPE,
+                            stdin=subprocess.PIPE, close_fds=True)
 
 if not args.no_stream:
     print('Using following address: {}'.format(stream))
     try:
-        subprocess.call('livestreamer {} best'.format(stream), shell=True)
+        retcode = subprocess.call('livestreamer {} best'.format(stream), shell=True)
+        retry_num = 0
+        while retcode == 1 and args.retry and retry_num < args.retry[0]:
+            print('Waiting {} seconds to retry...'.format(args.retry[0]))
+            time.sleep(args.retry[1])
+            retcode = subprocess.call('livestreamer {} best'.format(stream), shell=True)
+            retry_num += 1
     except KeyboardInterrupt:
         print('Caught keyboard interrupt... exiting')

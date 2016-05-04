@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# sudo ln -s `pwd`/live_file /usr/bin/mybin/live
+
 LIVE_FILE_NAME='/usr/bin/live'
 if [[ $# -ge 1 ]]; then
     LIVE_FILE_NAME='/usr/bin/'$1
