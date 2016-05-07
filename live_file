@@ -6,13 +6,18 @@ import argparse
 import time
 
 parser = argparse.ArgumentParser(description='Livestreamer wrapper')
-parser.add_argument('stream', nargs='?', default=None, help='stream address')
-parser.add_argument('-c', '--chat', action='store_true', help='open chat in browser')
-parser.add_argument('-d', '--no-edit', action='store_true', help='do not try to modify stream address')
+parser.add_argument('stream', nargs='?', default=None,
+                    help='Stream address')
+parser.add_argument('-c', '--chat', action='store_true',
+                    help='Open chat in browser')
+parser.add_argument('-d', '--no-edit', action='store_true',
+                    help='Do not try to modify stream address')
 parser.add_argument('-z', '--no-stream', action='store_true',
-                    help='do not start the stream (only open chat, if the -c option is present)')
+                    help='Do not start the stream (only open chat, if the -c option is present)')
 parser.add_argument('-t', '--retry', nargs=2, type=int, metavar=('x', 'y'),
-                    help='retry starting the stream x times with y seconds in between')
+                    help='Retry starting the stream x times with y seconds in between')
+parser.add_argument('-q', '--quality', nargs=1,
+                    help='Choose quality (mobile / low / medium / high / source)')
 
 args = parser.parse_args()
 stream = args.stream
@@ -44,15 +49,20 @@ if args.chat:
                             stderr=subprocess.PIPE, stdout=subprocess.PIPE,
                             stdin=subprocess.PIPE, close_fds=True)
 
+if args.quality:
+    quality = args.quality[0]
+else:
+    quality = 'best'
+
 if not args.no_stream:
     print('Using following address: {}'.format(stream))
     try:
-        retcode = subprocess.call('livestreamer {} best'.format(stream), shell=True)
+        retcode = subprocess.call('livestreamer {} {}'.format(stream, quality), shell=True)
         retry_num = 0
         while retcode == 1 and args.retry and retry_num < args.retry[0]:
             print('Waiting {} seconds to retry...'.format(args.retry[0]))
             time.sleep(args.retry[1])
-            retcode = subprocess.call('livestreamer {} best'.format(stream), shell=True)
+            retcode = subprocess.call('livestreamer {} {}'.format(stream, quality), shell=True)
             retry_num += 1
     except KeyboardInterrupt:
         print('Caught keyboard interrupt... exiting')
