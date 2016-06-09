@@ -7,7 +7,7 @@ import time
 
 parser = argparse.ArgumentParser(description='Livestreamer wrapper')
 parser.add_argument('stream', nargs='?', default=None,
-                    help='Stream address')
+                    help='Stream address (if no address is specified, the value stored in the system clipboard will be used)')
 parser.add_argument('-c', '--chat', action='store_true',
                     help='Open chat in browser')
 parser.add_argument('-d', '--no-edit', action='store_true',
