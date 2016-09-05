@@ -30,9 +30,9 @@ if not stream:
         parser.print_help()
         sys.exit(1)  # exit failure
     print('Buffer contained the following address: {}'.format(clipboard))
-    stream = clipboard
+    stream = clipboard.decode('utf-8')
 
-if not 'http' in stream or ';' in stream:  # prevent accidents
+if not ('http' in stream or 'https' in stream) or ';' in stream:  # prevent accidents
     print('Bad address: {}'.format(stream))
     parser.print_help()
     sys.exit(1)  # exit failure
