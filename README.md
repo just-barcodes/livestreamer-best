@@ -2,7 +2,7 @@
 
 Whenever I use [Streamlink](https://streamlink.github.io/index.html) (ex
 [livestreamer](https://github.com/chrippa/livestreamer)), I always use
-`streamlink http://stream best` (with the `best` option). This simple script
+`streamlink https://stream best` (with the `best` option). This simple script
 calls best automatically, so that I can copy the address of the stream and just
 call `live` (and the adress will automatically be pasted to the terminal using
 `xclip`).
@@ -37,14 +37,15 @@ $> live
 You can also still specify a stream-address directly:
 
 ```
-$> live http://www.twitch.tv/day9tv
+$> live https://www.twitch.tv/day9tv
 ```
 
 It will now also work with addresses like
 ```
-$> live http://player.twitch.tv/?channel=day9tv
+$> live https://player.twitch.tv/?channel=day9tv
 ```
-as it will automatically cut out the `?channel=` part.
+as it will automatically cut out the `?channel=` part. It will also
+automatically try to convert `http` to `https` addresses.
 
 
 ### Options
