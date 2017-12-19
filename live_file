@@ -5,7 +5,7 @@ import subprocess
 import argparse
 import time
 
-parser = argparse.ArgumentParser(description='Livestreamer wrapper')
+parser = argparse.ArgumentParser(description='Streamlink wrapper')
 parser.add_argument('stream', nargs='?', default=None,
                     help='Stream address (if no address is specified, the value stored in the system clipboard will be used)')
 parser.add_argument('-c', '--chat', action='store_true',
@@ -57,12 +57,12 @@ else:
 if not args.no_stream:
     print('Using following address: {}'.format(stream))
     try:
-        retcode = subprocess.call('livestreamer {} {}'.format(stream, quality), shell=True)
+        retcode = subprocess.call('streamlink {} {}'.format(stream, quality), shell=True)
         retry_num = 0
         while retcode == 1 and args.retry and retry_num < args.retry[0]:
             print('Waiting {} seconds to retry...'.format(args.retry[1]))
             time.sleep(args.retry[1])
-            retcode = subprocess.call('livestreamer {} {}'.format(stream, quality), shell=True)
+            retcode = subprocess.call('streamlink {} {}'.format(stream, quality), shell=True)
             retry_num += 1
     except KeyboardInterrupt:
         print('Caught keyboard interrupt... exiting')

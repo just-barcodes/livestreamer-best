@@ -1,10 +1,11 @@
-# livestreamer-best
+# livestreamer-best (now Streamlink)
 
-Whenever I use [livestreamer](https://github.com/chrippa/livestreamer), I always
-use `livestreamer http://stream best` (with the `best` option). This simple
-script calls best automatically, so that I can copy the address of the stream
-and just call `live` (and the adress will automatically be pasted to the
-terminal using `xclip`).
+Whenever I use [Streamlink](https://streamlink.github.io/index.html) (ex
+[livestreamer](https://github.com/chrippa/livestreamer)), I always use
+`streamlink http://stream best` (with the `best` option). This simple script
+calls best automatically, so that I can copy the address of the stream and just
+call `live` (and the adress will automatically be pasted to the terminal using
+`xclip`).
 
 
 ### Installation
