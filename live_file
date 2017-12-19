@@ -32,10 +32,18 @@ if not stream:
     print('Buffer contained the following address: {}'.format(clipboard))
     stream = clipboard.decode('utf-8')
 
-if not ('http' in stream or 'https' in stream) or ';' in stream:  # prevent accidents
+if ';' in stream:
     print('Bad address: {}'.format(stream))
     parser.print_help()
     sys.exit(1)  # exit failure
+
+if not stream.startswith('https'):
+    if stream.startswith('http'):
+        stream = 'https' + stream[4:]
+    else:
+        print('Bad address: {}'.format(stream))
+        parser.print_help()
+        sys.exit(1)  # exit failure
 
 if not args.no_edit:
     stream = stream.replace('?channel=', '')
